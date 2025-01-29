@@ -108,4 +108,3 @@ def cadastro_janela():
     cadastro_aberto = True
 
     janela.mainloop()
-menu_janela()
