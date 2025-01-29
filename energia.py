@@ -20,4 +20,3 @@ def deletar_usuario(nome):
         for linha in dados:
             if linha[0] != nome:
                 escritor.writerow(linha)
-deletar_usuario('otoniel')
