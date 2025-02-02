@@ -47,7 +47,7 @@ def menu_janela():
     tabela.column('#3', width=200)
     tabela.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
-    global_frame_menu.pack(padx=10, pady=10, fill='both', expand='yes')
+    global_frame_menu.pack(padx=10, pady=10, expand='yes')
 
     carregar_tabela(tabela)
     janela.mainloop()
@@ -103,7 +103,7 @@ def cadastro_janela():
     botao_cadastrar = ttk.Button(global_frame_cadastro, text='Cadastrar', command=capturando_dados_formulario)
     botao_cadastrar.grid(row=4, column=1, columnspan=2, padx=10, pady=10)
 
-    global_frame_cadastro.pack(padx=10, pady=10, fill='both', expand='yes')
+    global_frame_cadastro.pack(padx=10, pady=10, expand='yes')
 
     cadastro_aberto = True
 
