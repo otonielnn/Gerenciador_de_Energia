@@ -1,4 +1,5 @@
 import csv
+import os
 
 def salvando_dados_cadastro(nome, consumo, producao, preco):
     with open('dados.csv', mode='a', newline='') as arquivo:
@@ -7,6 +8,9 @@ def salvando_dados_cadastro(nome, consumo, producao, preco):
 
 def carregar_dados():
     dados = []
+    if not os.path.exists('dados.csv'):
+        with open('dados.csv', mode='w', newline='') as arquivo:
+            pass
     with open('dados.csv', mode='r', newline='') as arquivo:
         leitor = csv.reader(arquivo)
         for linha in leitor:
