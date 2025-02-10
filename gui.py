@@ -6,6 +6,7 @@ estilo = Style(theme='superhero')
 janela = estilo.master
 janela.minsize(400, 300)
 
+itens_aberto = False
 cadastro_aberto = False
 
 def carregar_tabela(lista):
@@ -14,7 +15,7 @@ def carregar_tabela(lista):
 
     dados = carregar_dados()
     for linha in dados:
-        lista.insert('', 'end', text=linha[0], values=(linha[1], linha[2], linha[3]))
+        lista.insert('', 'end', text=linha[0], values=(linha[1], linha[2]))
 
 def deletar_usuario_selecionado(lista):
     selected_item = lista.selection()
@@ -30,22 +31,23 @@ def menu_janela():
     global_frame_menu = ttk.Frame(janela)
     
     botao_cadastro = ttk.Button(global_frame_menu, text='Fazer Cadastro', command=cadastro_janela)
-    botao_cadastro.grid(row=0, column=0, padx=30, pady=100)
+    botao_cadastro.grid(row=0, column=0, pady=10)
 
-    botao_dados_energia = ttk.Button(global_frame_menu, text='Remover Cadastro', command=lambda: deletar_usuario_selecionado(tabela))
-    botao_dados_energia.grid(row=0, column=1, padx=10, pady=100)
+    botao_remover_usuario = ttk.Button(global_frame_menu, text='Remover Cadastro', command=lambda: deletar_usuario_selecionado(tabela))
+    botao_remover_usuario.grid(row=0, column=1, pady=10)
+
+    botao_itens_usuario = ttk.Button(global_frame_menu, text='Itens do Usuário', command=itens_janela)
+    botao_itens_usuario.grid(row=1, column=0, pady=10)
 
     global tabela
-    tabela = ttk.Treeview(global_frame_menu, columns=('Nome', 'Consumo em kWh', 'Produção', 'Preço do kWh'))
+    tabela = ttk.Treeview(global_frame_menu, columns=('Nome', 'Produção', 'Preço do kWh'))
     tabela.heading('#0', text='Nome')
-    tabela.heading('#1', text='Consumo em kWh')
-    tabela.heading('#2', text='Produção')
-    tabela.heading('#3', text='Preço do kWh')
-    tabela.column('#0', width=200)
-    tabela.column('#1', width=200)
-    tabela.column('#2', width=200)
-    tabela.column('#3', width=200)
-    tabela.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+    tabela.heading('#1', text='Produção')
+    tabela.heading('#2', text='Preço do kWh')
+    tabela.column('#0', width=200, anchor="center")
+    tabela.column('#1', width=200, anchor="center")
+    tabela.column('#2', width=200, anchor="center")
+    tabela.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
     global_frame_menu.pack(padx=10, pady=10, expand='yes')
 
@@ -67,12 +69,6 @@ def cadastro_janela():
     entrada_nome = ttk.Entry(global_frame_cadastro, width=80)
     entrada_nome.grid(row=0, column=1, padx=10, pady=10)
 
-    label_uso_energia = ttk.Label(global_frame_cadastro, text='Digite sua Média de consumo em kWh:')
-    label_uso_energia.grid(row=1, column=0, padx=10, pady=10)
-
-    entrada_uso_energia = ttk.Entry(global_frame_cadastro, width=80)
-    entrada_uso_energia.grid(row=1, column=1, padx=10, pady=10)
-
     label_producao_energia = ttk.Label(global_frame_cadastro, text='Digite sua Produção em kWh:')
     label_producao_energia.grid(row=2, column=0, padx=10, pady=10)
 
@@ -92,19 +88,57 @@ def cadastro_janela():
 
     def capturando_dados_formulario():
         nome = entrada_nome.get()
-        uso_energia = entrada_uso_energia.get()
         producao_energia = entrada_producao_energia.get()
         preco_kwd = entrada_preco_kwd.get()
-        salvando_dados_cadastro(nome, uso_energia, producao_energia, preco_kwd)
+        salvando_dados_cadastro(nome, producao_energia, preco_kwd)
         esconder_cadastro()
         carregar_tabela(tabela)
         tabela.selection()
 
     botao_cadastrar = ttk.Button(global_frame_cadastro, text='Cadastrar', command=capturando_dados_formulario)
-    botao_cadastrar.grid(row=4, column=1, columnspan=2, padx=10, pady=10)
+    botao_cadastrar.grid(row=4, column=1, pady=10)
+    
+    botao_fechar = ttk.Button(global_frame_cadastro, text='Fechar', command=esconder_cadastro)
+    botao_fechar.grid(row=4, column=0, pady=10)
 
     global_frame_cadastro.pack(padx=10, pady=10, expand='yes')
 
     cadastro_aberto = True
+
+    janela.mainloop()
+
+def itens_janela():
+    janela.title('Itens do Usuário')
+
+    global itens_aberto
+    if itens_aberto:
+        return
+
+    global_frame_itens = ttk.Frame(janela)
+
+    label_nome_item = ttk.Label(global_frame_itens, text='Nome do item:')
+    label_nome_item.grid(row=0, column=0, padx=10, pady=10)
+
+    entrada_nome_item = ttk.Entry(global_frame_itens, width=80)
+    entrada_nome_item.grid(row=0, column=1, padx=10, pady=10)
+    
+
+    label_uso_energia = ttk.Label(global_frame_itens, text='Consumo em kWh:')
+    label_uso_energia.grid(row=1, column=0, padx=10, pady=10)
+
+    entrada_uso_energia = ttk.Entry(global_frame_itens, width=80)
+    entrada_uso_energia.grid(row=1, column=1, padx=10, pady=10)
+
+    def esconder_itens():
+        global itens_aberto
+        itens_aberto = False
+        global_frame_itens.pack_forget()
+
+    botao_fechar = ttk.Button(global_frame_itens, text='Fechar', command=esconder_itens)
+    botao_fechar.grid(row=2, column=0, pady=10)
+
+    global_frame_itens.pack(padx=10, pady=10, expand='yes')
+
+    itens_aberto = True
 
     janela.mainloop()
