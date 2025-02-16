@@ -44,9 +44,9 @@ def menu_janela():
     botao_ver_itens_usuario.grid(row=1, column=1, pady=10)
 
     global tabela
-    tabela = ttk.Treeview(global_frame_menu, columns=('Nome', 'Produção', 'Preço do kWh'))
+    tabela = ttk.Treeview(global_frame_menu, columns=('Nome', 'Produção Kwh', 'Preço do kWh'))
     tabela.heading('#0', text='Nome')
-    tabela.heading('#1', text='Produção')
+    tabela.heading('#1', text='Produção Kwh')
     tabela.heading('#2', text='Preço do kWh')
     tabela.column('#0', width=200, anchor="center")
     tabela.column('#1', width=200, anchor="center")
@@ -207,20 +207,34 @@ def visualizar_itens_janela():
     tabela_itens.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 
     dados = carregar_dados()
+    total_consumo = 0
     for linha in dados:
         if linha[0] == nome_usuario:
             qtd_itens = len(linha) - 3
             item = linha
             for i in range(qtd_itens):
-                tabela_itens.insert('', 'end', values=(linha[3+i][0], linha[3+i][1]))
-    
+                nome_item = item[3+i][0]
+                consumo_item = item[3+i][1]
+                tabela_itens.insert('', 'end', values=(nome_item, consumo_item))
+                total_consumo += float(linha[3+i][1])
+
+    produção_kwh = float(item[1])
+    preço_kwh = float(item[2])
+    total_consumo_reais = (produção_kwh - total_consumo) * preço_kwh
+
     def esconder_view_itens():
         global view_itens_aberto
         view_itens_aberto = False
         view_itens_frame.pack_forget()
     
+    label_total_consumo_kwh = ttk.Label(view_itens_frame, text=f'Total de Consumo: {total_consumo:.2f} kWh')
+    label_total_consumo_kwh.grid(row=1, column=0, columnspan=2, pady=10, padx=20)
+
+    label_total_consumo_reais = ttk.Label(view_itens_frame, text=f'Gasto em Reais: R${total_consumo_reais:.2f}')
+    label_total_consumo_reais.grid(row=2, column=0, columnspan=2, pady=10, padx=20)
+
     botao_fechar_view_itens = ttk.Button(view_itens_frame, text='Fechar', command=esconder_view_itens)
-    botao_fechar_view_itens.grid(row=1, column=0, columnspan=2, pady=10, padx=20)
+    botao_fechar_view_itens.grid(row=3, column=0, columnspan=2, pady=10, padx=20)
 
     view_itens_frame.pack(padx=10, pady=10, expand='yes')
 
