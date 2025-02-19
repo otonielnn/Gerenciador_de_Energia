@@ -1,40 +1,64 @@
 import csv
 import os
-from ast import literal_eval
 
-def salvando_dados_cadastro(nome, producao, preco):
-    with open('dados.csv', mode='a', newline='', encoding='UTF-8') as arquivo:
+def salvar_usuario(user):
+    with open('usuarios.csv', mode='a', newline='', encoding='UTF-8') as arquivo:
         escritor = csv.writer(arquivo)
-        escritor.writerow([nome, producao, preco])
+        nome = user[0]
+        cpf = user[1]
+        data_nascimento = user[2]
+        endereco = user[3]
+        cidade = user[4]
+        estado = user[5]
+        preco = user[6]
+        escritor.writerow([nome, cpf, data_nascimento, endereco, cidade, estado, preco])
 
-def carregar_dados():
+def carregar_usuarios():
     dados = []
-    if not os.path.exists('dados.csv'):
-        with open('dados.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
+    if not os.path.exists('usuarios.csv'):
+        with open('usuarios.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
             pass
-    with open('dados.csv', mode='r', newline='', encoding='UTF-8') as arquivo:
+    with open('usuarios.csv', mode='r', newline='', encoding='UTF-8') as arquivo:
         leitor = csv.reader(arquivo)
         for linha in leitor:
-            if len(linha) > 3:
-                qtd_itens = len(linha) - 3
-                for i in range(qtd_itens):
-                    linha[3 + i] = literal_eval(linha[3 + i])
-            dados.append(linha)
+            if linha:
+                dados.append(linha)
         return dados
 
-def deletar_usuario(nome):
-    dados = carregar_dados()
-    with open('dados.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
+def deletar_usuario(id_usuario):
+    dados = carregar_usuarios()
+    with open('usuarios.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
         escritor = csv.writer(arquivo)
         for linha in dados:
-            if linha[0] != nome:
+            if linha[0] != id_usuario:
                 escritor.writerow(linha)
 
-def adicionar_item_usuario(nome, item):
-    dados = carregar_dados()
-    with open('dados.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
+def salvar_item(item):
+    with open('itens.csv', mode='a', newline='', encoding='UTF-8') as arquivo:
+        escritor = csv.writer(arquivo)
+        id_item = item[0]
+        id_usuario = item[1]
+        nome = item[2]
+        marca = item[3]
+        descricao = item[4]
+        uso_energia = item[5]
+        escritor.writerow([id_item, id_usuario, nome, marca, descricao, uso_energia])
+
+def carregar_item():
+    dados = []
+    if not os.path.exists('itens.csv'):
+        with open('itens.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
+            pass
+    with open('itens.csv', mode='r', newline='', encoding='UTF-8') as arquivo:
+        leitor = csv.reader(arquivo)
+        for linha in leitor:
+            dados.append(linha)
+        return dados
+    
+def deletar_item(id_item):
+    dados = carregar_usuarios()
+    with open('itens.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
         escritor = csv.writer(arquivo)
         for linha in dados:
-            if linha[0] == nome:
-                linha.append(item)
-            escritor.writerow(linha)
+            if linha[0] != id_item:
+                escritor.writerow(linha)
