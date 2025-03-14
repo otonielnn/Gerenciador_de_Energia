@@ -1,6 +1,6 @@
 from tkinter import ttk
 from ttkbootstrap import Style
-from energia import carregar_usuarios, deletar_usuario, salvar_usuario, carregar_item, salvar_item
+from energia import carregar_usuarios, deletar_usuario, salvar_usuario, carregar_item, salvar_item, deletar_item
 import uuid
 
 estilo = Style(theme='superhero')
@@ -308,11 +308,24 @@ def visualizar_itens_janela():
 
     tabela_itens["show"] = "headings"
     tabela_itens.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+
+    def carregar_usuario_por_cpf(cpf_usuario):
+        dados = carregar_usuarios()
+        for linha in dados:
+            if linha[1] == cpf_usuario:
+                return linha
+        return None
+    
+    usuario = carregar_usuario_por_cpf(cpf_usuario)
+    preco = float(usuario[6])
     
     total_consumo = carregar_tabela_itens(tabela_itens, cpf_usuario)
 
     label_soma_consumo = ttk.Label(view_itens_frame, text=f'Consumo Total em kWh: {total_consumo}')
-    label_soma_consumo.grid(row=1, column=0, columnspan=2)    
+    label_soma_consumo.grid(row=1, column=0, columnspan=2)   
+
+    label_valor_total = ttk.Label(view_itens_frame, text=f'Valor total do kWh em Real: R${total_consumo*preco}')
+    label_valor_total.grid(row=2, column=0, columnspan=2)   
 
     def esconder_view_itens():
         global view_itens_aberto
@@ -322,7 +335,14 @@ def visualizar_itens_janela():
     botao_fechar_view_itens = ttk.Button(view_itens_frame, text='Fechar', command=esconder_view_itens)
     botao_fechar_view_itens.grid(row=3, column=0, columnspan=2, pady=10, padx=20)
 
+    '''
+    botao_deletar_itens = ttk.Button(view_itens_frame, text='Deletar Item', command=lambda: deletar_item(id_item))    
+    botao_deletar_itens.grid(row=4, column=0, columnspan=2, pady=10, padx=20)
+    '''
+
     view_itens_frame.pack(padx=10, pady=10, expand='yes')
 
     view_itens_aberto = True
     janela.mainloop()
+
+   
