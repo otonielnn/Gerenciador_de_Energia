@@ -335,11 +335,6 @@ def visualizar_itens_janela():
     botao_fechar_view_itens = ttk.Button(view_itens_frame, text='Fechar', command=esconder_view_itens)
     botao_fechar_view_itens.grid(row=3, column=0, columnspan=2, pady=10, padx=20)
 
-    '''
-    botao_deletar_itens = ttk.Button(view_itens_frame, text='Deletar Item', command=lambda: deletar_item(id_item))    
-    botao_deletar_itens.grid(row=4, column=0, columnspan=2, pady=10, padx=20)
-    '''
-
     view_itens_frame.pack(padx=10, pady=10, expand='yes')
 
     view_itens_aberto = True
