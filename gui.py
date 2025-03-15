@@ -272,6 +272,14 @@ def adicionar_itens_janela():
 
     janela.mainloop()
 
+def deletar_item_selecionado(lista_itens, cpf_usuario):
+    selected_item = lista_itens.selection()
+    if selected_item:
+        item = lista_itens.item(selected_item)
+        id_item = item['text']  
+        deletar_item(id_item)  
+        carregar_tabela_itens(lista_itens, cpf_usuario) 
+
 def visualizar_itens_janela():
     global view_itens_aberto
     if view_itens_aberto:
@@ -306,6 +314,10 @@ def visualizar_itens_janela():
     tabela_itens.column('Marca', width=200, anchor='center')
     tabela_itens.column('Descricao', width=200, anchor='center')
 
+    botao_deletar_itens = ttk.Button(view_itens_frame, text='Deletar Item', command=lambda: deletar_item_selecionado(tabela_itens, cpf_usuario))
+    botao_deletar_itens.grid(row=3, column=0, columnspan=2, pady=10)
+
+
     tabela_itens["show"] = "headings"
     tabela_itens.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 
@@ -324,7 +336,7 @@ def visualizar_itens_janela():
     label_soma_consumo = ttk.Label(view_itens_frame, text=f'Consumo Total em kWh: {total_consumo}')
     label_soma_consumo.grid(row=1, column=0, columnspan=2)   
 
-    label_valor_total = ttk.Label(view_itens_frame, text=f'Valor total do kWh em Real: R${total_consumo*preco}')
+    label_valor_total = ttk.Label(view_itens_frame, text=f'Valor total do kWh em Real: R${total_consumo*preco:.2f}')
     label_valor_total.grid(row=2, column=0, columnspan=2)   
 
     def esconder_view_itens():
@@ -333,8 +345,8 @@ def visualizar_itens_janela():
         view_itens_frame.pack_forget()
 
     botao_fechar_view_itens = ttk.Button(view_itens_frame, text='Fechar', command=esconder_view_itens)
-    botao_fechar_view_itens.grid(row=3, column=0, columnspan=2, pady=10, padx=20)
-
+    botao_fechar_view_itens.grid(row=4, column=0, columnspan=2, pady=10, padx=20)
+   
     view_itens_frame.pack(padx=10, pady=10, expand='yes')
 
     view_itens_aberto = True

@@ -56,7 +56,7 @@ def carregar_item():
         return dados
     
 def deletar_item(id_item):
-    dados = carregar_usuarios()
+    dados = carregar_item()
     with open('itens.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
         escritor = csv.writer(arquivo)
         for linha in dados:
