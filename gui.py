@@ -25,7 +25,7 @@ def carregar_tabela_itens(lista_itens, cpf_usuario):
             nome = linha[2]
             marca = linha[3]
             descricao = linha[4]
-            consumo = int(linha[5])
+            consumo = float(linha[5])
             total_consumo += consumo
             lista_itens.insert('', 'end', text=id_item, values=(id_item, cpf_usuario, nome, marca, descricao, consumo))
     return total_consumo
