@@ -49,8 +49,8 @@ def deletar_usuario_selecionado(lista):
     selected_item = lista.selection()
     if selected_item:
         item = lista.item(selected_item)
-        nome = item['text']
-        deletar_usuario(nome)
+        cpf = item['text']
+        deletar_usuario(cpf)
         carregar_tabela_usuarios(lista)
 
 def menu_janela():
@@ -345,4 +345,3 @@ def visualizar_itens_janela():
     view_itens_aberto = True
     janela.mainloop()
 
-   

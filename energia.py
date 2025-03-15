@@ -25,12 +25,12 @@ def carregar_usuarios():
                 dados.append(linha)
         return dados
 
-def deletar_usuario(id_usuario):
+def deletar_usuario(cpf_usuario):
     dados = carregar_usuarios()
     with open('usuarios.csv', mode='w', newline='', encoding='UTF-8') as arquivo:
         escritor = csv.writer(arquivo)
         for linha in dados:
-            if linha[0] != id_usuario:
+            if linha[1] != cpf_usuario:
                 escritor.writerow(linha)
 
 def salvar_item(item):
